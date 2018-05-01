@@ -1,0 +1,47 @@
+From 8c4a55209bcb054b610c613ac2f1b2ad25253a20 Mon Sep 17 00:00:00 2001
+From: Peter Jones <pjones@redhat.com>
+Date: Tue, 1 May 2018 12:54:05 -0400
+Subject: [PATCH 1/5] Simplify %efi_arch_upper
+
+Signed-off-by: Peter Jones <pjones@redhat.com>
+---
+ macros.efi.in | 25 ++-----------------------
+ 1 file changed, 2 insertions(+), 23 deletions(-)
+
+diff --git a/macros.efi.in b/macros.efi.in
+index 953dcfb1200..d935fd23da1 100644
+--- a/macros.efi.in
++++ b/macros.efi.in
+@@ -53,27 +53,6 @@ end
+ }
+ 
+ %efi_arch_upper %{lua:
+--- test if our arch matches
+-local function ifarch(archmacro)
+-  local target = rpm.expand(" %{_target_cpu} ")
+-  local arches = rpm.expand(" " .. archmacro .. " ")
+-  local match = string.match(arches, target)
+-  if not (match == nil) then
+-    return true
+-  end
+-end
+--- Do the work
+-if ifarch("x86_64") then
+-  print("X64")
+-elseif ifarch("%{ix86}") then
+-  print("IA32")
+-elseif ifarch("aarch64") then
+-  print("AA64")
+-elseif ifarch("%{arm}") then
+-  print("ARM")
+-elseif ifarch("ia64") then
+-  print("IA64")
+-else
+-  print("")
+-end
++  local arch = rpm.expand("%{efi_arch}")
++  print(string.upper(arch))
+ }
+-- 
+2.14.3
+

@@ -1,0 +1,26 @@
+From 4f7a7e6084bfbc28f194ab63a76239a622c7baad Mon Sep 17 00:00:00 2001
+From: Peter Jones <pjones@redhat.com>
+Date: Tue, 1 May 2018 12:55:44 -0400
+Subject: [PATCH 2/5] Add a changelog entry to the .spec for version 2.
+
+Signed-off-by: Peter Jones <pjones@redhat.com>
+---
+ efi-rpm-macros.spec.in | 3 +++
+ 1 file changed, 3 insertions(+)
+
+diff --git a/efi-rpm-macros.spec.in b/efi-rpm-macros.spec.in
+index 882f679aca9..c89fb6caf5e 100644
+--- a/efi-rpm-macros.spec.in
++++ b/efi-rpm-macros.spec.in
+@@ -43,5 +43,8 @@ Source0: https://github.com/rhboot/%{name}/releases/download/%{version}/%{name}-
+ %{_rpmmacrodir}/*
+ 
+ %changelog
++* Tue May 01 2018 Peter Jones <pjones@redhat.com> - 2-1
++- Lots of rpmlint fixups and the like.
++
+ * Mon Apr 30 2018 Peter Jones <pjones@redhat.com> - 1-1
+ - First shot at building it.
+-- 
+2.14.3
+

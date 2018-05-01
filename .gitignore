@@ -1,0 +1,7 @@
+*~
+*.rpm
+*.tar.*
+.*.sw?
+.build-*.log
+efi-rpm-macros-*/
+x86_64/

@@ -1,0 +1,55 @@
+From 1103d2ae35a3702b79b5dc32fc72b7b21711829e Mon Sep 17 00:00:00 2001
+From: Peter Jones <pjones@redhat.com>
+Date: Tue, 1 May 2018 13:45:29 -0400
+Subject: [PATCH 5/5] Return %{nil} instead of "" on unsupported arches
+
+Signed-off-by: Peter Jones <pjones@redhat.com>
+---
+ macros.efi.in | 16 ++++++++++++----
+ 1 file changed, 12 insertions(+), 4 deletions(-)
+
+diff --git a/macros.efi.in b/macros.efi.in
+index e03b9011e9d..a0bd67d9b69 100644
+--- a/macros.efi.in
++++ b/macros.efi.in
+@@ -48,13 +48,17 @@ elseif ifarch("%{arm}") then
+ elseif ifarch("ia64") then
+   print("ia64")
+ else
+-  print("")
++  print("%{nil}")
+ end
+ }
+ 
+ %efi_arch_upper %{lua:
+   local arch = rpm.expand("%{efi_arch}")
+-  print(string.upper(arch))
++  if arch == '%{nil}'
++    print(arch)
++  else
++    print(string.upper(arch))
++  end
+ }
+ 
+ %efi_alt_arch %{lua:
+@@ -71,11 +75,15 @@ end
+ if ifarch("x86_64") then
+   print("ia32")
+ else
+-  print("")
++  print("%{nil}")
+ end
+ }
+ 
+ %efi_alt_arch_upper %{lua:
+   local arch = rpm.expand("%{efi_alt_arch}")
+-  print(string.upper(arch))
++  if arch == '%{nil}'
++    print(arch)
++  else
++    print(string.upper(arch))
++  end
+ }
+-- 
+2.14.3
+
