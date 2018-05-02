@@ -20,6 +20,7 @@ Patch0006: 0006-efi_arch-turns-out-nil-is-definitely-not-what-we-wan.patch
 Patch0007: 0007-Make-a-macros.efi-srpm-that-defines-efi.patch
 Patch0008: 0008-Add-efi_has_alt_arch-0-or-1.patch
 Patch0009: 0009-Add-efi-filesystem-subpackage.patch
+Patch0010: 0010-efi-rpm-macros.spec-don-t-use-efi-rpm-macros-definit.patch
 
 %global debug_package %{nil}
 %global _efi_vendor_ %(eval sed -n -e 's/rhel/redhat/' -e 's/^ID=//p' /etc/os-release)
@@ -69,10 +70,10 @@ machine bootloaders and tools.
 
 %files -n efi-filesystem
 %defattr(0700,root,root,-)
-%dir %{efi_esp_root}
-%dir %{efi_esp_efi}
-%dir %{efi_esp_dir}
-%dir %{efi_esp_boot}
+%dir /boot/efi
+%dir /boot/efi/EFI
+%dir /boot/efi/EFI/BOOT
+%dir /boot/efi/EFI/%{_efi_vendor_}
 
 %changelog
 * Wed May 02 2018 Peter Jones <pjones@redhat.com> - 2-5
