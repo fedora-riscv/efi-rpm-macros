@@ -1,7 +1,7 @@
 Summary: Common RPM Macros for building EFI-related packages
 Name: efi-rpm-macros
 Version: 2
-Release: 3%{?dist}
+Release: 4%{?dist}
 Group: Development/System
 License: GPLv3+
 URL: https://github.com/rhboot/%{name}/
@@ -18,6 +18,7 @@ Patch0004: 0004-Add-efi_alt_arch-and-efi_alt_arch_upper.patch
 Patch0005: 0005-Return-nil-instead-of-on-unsupported-arches.patch
 Patch0006: 0006-efi_arch-turns-out-nil-is-definitely-not-what-we-wan.patch
 Patch0007: 0007-Make-a-macros.efi-srpm-that-defines-efi.patch
+Patch0008: 0008-Add-efi_has_alt_arch-0-or-1.patch
 
 %global debug_package %{nil}
 %global _efi_vendor_ %(eval sed -n -e 's/rhel/redhat/' -e 's/^ID=//p' /etc/os-release)
@@ -56,6 +57,9 @@ efi-srpm-macros provides a set of SRPM macros for use in EFI-related packages.
 %{_rpmmacrodir}/macros.efi-srpm
 
 %changelog
+* Wed May 02 2018 Peter Jones <pjones@redhat.com> - 2-4
+- Add %%{efi_has_alt_arch}
+
 * Tue May 01 2018 Peter Jones <pjones@redhat.com> - 2-3
 - Make an efi-srpm-macros subpackage to pull in so %%{efi} works in
   ExclusiveArch in koji.
