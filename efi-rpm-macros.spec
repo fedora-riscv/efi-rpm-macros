@@ -1,13 +1,13 @@
 Summary: Common RPM Macros for building EFI-related packages
 Name: efi-rpm-macros
 Version: 2
-Release: 4%{?dist}
+Release: 5%{?dist}
 Group: Development/System
 License: GPLv3+
 URL: https://github.com/rhboot/%{name}/
 ExclusiveArch: x86_64 aarch64 %{arm} %{ix86}
 BuildRequires: git sed
-Requires: rpm
+Requires: efi-filesystem rpm
 BuildArch: noarch
 
 Source0: https://github.com/rhboot/%{name}/releases/download/%{version}/%{name}-%{version}.tar.bz2
@@ -19,6 +19,7 @@ Patch0005: 0005-Return-nil-instead-of-on-unsupported-arches.patch
 Patch0006: 0006-efi_arch-turns-out-nil-is-definitely-not-what-we-wan.patch
 Patch0007: 0007-Make-a-macros.efi-srpm-that-defines-efi.patch
 Patch0008: 0008-Add-efi_has_alt_arch-0-or-1.patch
+Patch0009: 0009-Add-efi-filesystem-subpackage.patch
 
 %global debug_package %{nil}
 %global _efi_vendor_ %(eval sed -n -e 's/rhel/redhat/' -e 's/^ID=//p' /etc/os-release)
@@ -30,10 +31,20 @@ Patch0008: 0008-Add-efi_has_alt_arch-0-or-1.patch
 Summary: Common SRPM Macros for building EFI-related packages
 Group: Development/System
 BuildArch: noarch
-Requires: rpm
+Requires: efi-filesystem rpm
 
 %description -n efi-srpm-macros
 efi-srpm-macros provides a set of SRPM macros for use in EFI-related packages.
+
+%package -n efi-filesystem
+Summary: The basic directory layout for EFI machines
+Group: System Environment/Base
+BuildArch: noarch
+Requires: filesystem
+
+%description -n efi-filesystem
+The efi-filesystem package contains the basic directory layout for EFI
+machine bootloaders and tools.
 
 %prep
 %autosetup -S git
@@ -56,7 +67,17 @@ efi-srpm-macros provides a set of SRPM macros for use in EFI-related packages.
 %doc README
 %{_rpmmacrodir}/macros.efi-srpm
 
+%files -n efi-filesystem
+%defattr(0700,root,root,-)
+%dir %{efi_esp_root}
+%dir %{efi_esp_efi}
+%dir %{efi_esp_dir}
+%dir %{efi_esp_boot}
+
 %changelog
+* Wed May 02 2018 Peter Jones <pjones@redhat.com> - 2-5
+- Add efi-filesystem subpackage
+
 * Wed May 02 2018 Peter Jones <pjones@redhat.com> - 2-4
 - Add %%{efi_has_alt_arch}
 
