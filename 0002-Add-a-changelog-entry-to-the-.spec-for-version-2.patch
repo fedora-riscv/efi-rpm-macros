@@ -1,7 +1,7 @@
 From 4f7a7e6084bfbc28f194ab63a76239a622c7baad Mon Sep 17 00:00:00 2001
 From: Peter Jones <pjones@redhat.com>
 Date: Tue, 1 May 2018 12:55:44 -0400
-Subject: [PATCH 2/5] Add a changelog entry to the .spec for version 2.
+Subject: [PATCH 02/11] Add a changelog entry to the .spec for version 2.
 
 Signed-off-by: Peter Jones <pjones@redhat.com>
 ---

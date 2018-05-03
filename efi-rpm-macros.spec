@@ -1,7 +1,7 @@
 Summary: Common RPM Macros for building EFI-related packages
 Name: efi-rpm-macros
 Version: 2
-Release: 5%{?dist}
+Release: 6%{?dist}
 Group: Development/System
 License: GPLv3+
 URL: https://github.com/rhboot/%{name}/
@@ -21,6 +21,7 @@ Patch0007: 0007-Make-a-macros.efi-srpm-that-defines-efi.patch
 Patch0008: 0008-Add-efi_has_alt_arch-0-or-1.patch
 Patch0009: 0009-Add-efi-filesystem-subpackage.patch
 Patch0010: 0010-efi-rpm-macros.spec-don-t-use-efi-rpm-macros-definit.patch
+Patch0011: 0011-Do-it-differently.patch
 
 %global debug_package %{nil}
 %global _efi_vendor_ %(eval sed -n -e 's/rhel/redhat/' -e 's/^ID=//p' /etc/os-release)
@@ -56,11 +57,11 @@ machine bootloaders and tools.
 %install
 %make_install EFI_VENDOR=%{_efi_vendor_}
 
-%files
-%{!?_licensedir:%global license %%doc}
-%license LICENSE
-%doc README
-%{_rpmmacrodir}/macros.efi
+#%%files
+#%%{!?_licensedir:%%global license %%%%doc}
+#%%license LICENSE
+#%%doc README
+#%%{_rpmmacrodir}/macros.efi
 
 %files -n efi-srpm-macros
 %{!?_licensedir:%global license %%doc}
@@ -76,6 +77,9 @@ machine bootloaders and tools.
 %dir /boot/efi/EFI/%{_efi_vendor_}
 
 %changelog
+* Thu May 03 2018 Peter Jones <pjones@redhat.com> - 2-6
+- Rework the macros for better srpm use.
+
 * Wed May 02 2018 Peter Jones <pjones@redhat.com> - 2-5
 - Add efi-filesystem subpackage
 

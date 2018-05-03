@@ -1,7 +1,7 @@
 From 8c4a55209bcb054b610c613ac2f1b2ad25253a20 Mon Sep 17 00:00:00 2001
 From: Peter Jones <pjones@redhat.com>
 Date: Tue, 1 May 2018 12:54:05 -0400
-Subject: [PATCH 1/5] Simplify %efi_arch_upper
+Subject: [PATCH 01/11] Simplify %efi_arch_upper
 
 Signed-off-by: Peter Jones <pjones@redhat.com>
 ---

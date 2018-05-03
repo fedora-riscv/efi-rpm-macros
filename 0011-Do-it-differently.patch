@@ -1,0 +1,209 @@
+From 4031861b2964d24079827dea48a8e667cf96fd33 Mon Sep 17 00:00:00 2001
+From: Peter Jones <pjones@redhat.com>
+Date: Thu, 3 May 2018 09:38:48 -0400
+Subject: [PATCH 11/11] Do it differently.
+
+---
+ Makefile               |  5 ++--
+ efi-rpm-macros.spec.in | 10 +++----
+ macros.efi-srpm.in     | 61 ++++++++++++++++++++++++++++++++++++++++-
+ macros.efi.in          | 73 --------------------------------------------------
+ 4 files changed, 68 insertions(+), 81 deletions(-)
+
+diff --git a/Makefile b/Makefile
+index cf7cf956e8a..a3e20ec0bea 100644
+--- a/Makefile
++++ b/Makefile
+@@ -18,7 +18,8 @@ EFI_ESP_ROOT	?= /boot/efi
+ EFI_ARCHES	?= x86_64 aarch64 %{arm} %{ix86}
+ EFI_VENDOR	?=
+ 
+-TARGETS = macros.efi macros.efi-srpm efi-rpm-macros.spec
++# TARGETS = macros.efi macros.efi-srpm efi-rpm-macros.spec
++TARGETS = macros.efi-srpm efi-rpm-macros.spec
+ 
+ check_efi_vendor :
+ ifeq ($(EFI_VENDOR),)
+@@ -34,7 +35,7 @@ clean :
+ install : | check_efi_vendor
+ install : $(TARGETS)
+ 	install -d -m 0755 $(DESTDIR)/$(MACRODIR)
+-	install -m 0644 macros.efi $(DESTDIR)/$(MACRODIR)/
++	# install -m 0644 macros.efi $(DESTDIR)/$(MACRODIR)/
+ 	install -m 0644 macros.efi-srpm $(DESTDIR)/$(MACRODIR)/
+ 	if [[ "$(EFI_ESP_ROOT)" != /boot ]] ; then \
+ 		install -d -m 0755 $(DESTDIR)/boot ; \
+diff --git a/efi-rpm-macros.spec.in b/efi-rpm-macros.spec.in
+index 1835d20e08f..0ab82ca295d 100644
+--- a/efi-rpm-macros.spec.in
++++ b/efi-rpm-macros.spec.in
+@@ -46,11 +46,11 @@ machine bootloaders and tools.
+ %install
+ %make_install EFI_VENDOR=%{_efi_vendor_}
+ 
+-%files
+-%{!?_licensedir:%global license %%doc}
+-%license LICENSE
+-%doc README
+-%{_rpmmacrodir}/macros.efi
++#%%files
++#%%{!?_licensedir:%%global license %%%%doc}
++#%%license LICENSE
++#%%doc README
++#%%{_rpmmacrodir}/macros.efi
+ 
+ %files -n efi-srpm-macros
+ %{!?_licensedir:%global license %%doc}
+diff --git a/macros.efi-srpm.in b/macros.efi-srpm.in
+index 7192b07ba6c..2630f28e72e 100644
+--- a/macros.efi-srpm.in
++++ b/macros.efi-srpm.in
+@@ -17,4 +17,63 @@
+ # along with this program.  If not, see <https://www.gnu.org/licenses/>.
+ #
+ 
+-%efi @@EFI_ARCHES@@
++%_efi_rpm_macros_setup() %{expand:%{lua:
++  -- test if our arch matches
++  local function ifarch(archmacro)
++    local target = rpm.expand(" %{_target_cpu} ")
++    local arches = rpm.expand(" " .. archmacro .. " ")
++    local match = string.match(arches, target)
++    if not (match == nil) then
++      return true
++    end
++  end
++  -- give us the arch...
++  local function getarch()
++    if ifarch("ia64") then
++      return("ia64")
++    elseif ifarch("x86_64") then
++      return("x64")
++    elseif ifarch("%{ix86}") then
++      return("ia32")
++    elseif ifarch("aarch64") then
++      return("aa64")
++    elseif ifarch("%{arm}") then
++      return("arm")
++    end
++  end
++  -- alt arch
++  local function getaltarch()
++    if ifarch("x86_64") then
++      return("ia32")
++    else
++      return(nil)
++    end
++  end
++  -- make some macros
++  local done = rpm.expand("%{?_efi}")
++  if done == nil or done == "" then
++    local alt = getaltarch()
++    print("%global _efi @@EFI_ARCHES@@\\n")
++    print("%global _efi_vendor @@EFI_VENDOR@@\\n")
++    print("%global _efi_arch " .. getarch() .. "\\n")
++    print("%global _efi_arch_upper " .. string.upper(getarch()) .. "\\n")
++    if not (alt == nil or alt == "") then
++      print("%global _efi_alt_arch " .. alt .. "\\n")
++      print("%global _efi_alt_arch_upper " .. string.upper(alt) .. "\\n")
++    end
++  end
++}}%{expand:%{?_efi_alt_arch:%global efi_alt_arch %%{_efi_alt_arch}%global efi_alt_arch_upper %%{_efi_alt_arch_upper}}}
++
++%efi_rpm_macros_version %{expand:%{_efi_rpm_macros_setup}}@@EFI_RPM_MACROS_VERSION@@
++
++%efi %{expand:%{_efi_rpm_macros_setup}}%{expand:%{_efi}}
++%efi_vendor %{expand:%{_efi_rpm_macros_setup}}%{expand:%{_efi_vendor}}
++
++%efi_esp_root @@EFI_ESP_ROOT@@
++%efi_esp_efi %{efi_esp_root}/EFI
++%efi_esp_boot %{efi_esp_efi}/BOOT
++%efi_esp_dir %{expand:%{_efi_rpm_macros_setup}}%{efi_esp_efi}/%{efi_vendor}
++
++%efi_arch %{expand:%{_efi_rpm_macros_setup}}%{_efi_arch}
++%efi_arch_upper %{expand:%{_efi_rpm_macros_setup}}%{_efi_arch_upper}
++%efi_has_alt_arch %{expand:%{_efi_rpm_macros_setup}}0%{?_efi_alt_arch:1}
+diff --git a/macros.efi.in b/macros.efi.in
+index 66139a257d5..56c9ea0138a 100644
+--- a/macros.efi.in
++++ b/macros.efi.in
+@@ -16,76 +16,3 @@
+ # You should have received a copy of the GNU General Public License
+ # along with this program.  If not, see <https://www.gnu.org/licenses/>.
+ #
+-
+-%efi @@EFI_ARCHES@@
+-
+-%efi_vendor @@EFI_VENDOR@@
+-
+-%efi_esp_root @@EFI_ESP_ROOT@@
+-%efi_esp_efi %{efi_esp_root}/EFI
+-%efi_esp_boot %{efi_esp_efi}/BOOT
+-%efi_esp_dir %{efi_esp_efi}/%{efi_vendor}
+-
+-%efi_arch %{lua:
+--- test if our arch matches
+-local function ifarch(archmacro)
+-  local target = rpm.expand(" %{_target_cpu} ")
+-  local arches = rpm.expand(" " .. archmacro .. " ")
+-  local match = string.match(arches, target)
+-  if not (match == nil) then
+-    return true
+-  end
+-end
+--- Do the work
+-if ifarch("x86_64") then
+-  print("x64")
+-elseif ifarch("%{ix86}") then
+-  print("ia32")
+-elseif ifarch("aarch64") then
+-  print("aa64")
+-elseif ifarch("%{arm}") then
+-  print("arm")
+-elseif ifarch("ia64") then
+-  print("ia64")
+-else
+-  rpm.expand("%%{error:Not an EFI architecture}")
+-  print("")
+-end
+-}
+-
+-%efi_arch_upper %{lua:
+-  local arch = rpm.expand("%{efi_arch}")
+-  print(string.upper(arch))
+-}
+-
+-%efi_alt_arch %{lua:
+--- test if our arch matches
+-local function ifarch(archmacro)
+-  local target = rpm.expand(" %{_target_cpu} ")
+-  local arches = rpm.expand(" " .. archmacro .. " ")
+-  local match = string.match(arches, target)
+-  if not (match == nil) then
+-    return true
+-  end
+-end
+--- Do the work
+-if ifarch("x86_64") then
+-  print("ia32")
+-else
+-  print("")
+-end
+-}
+-
+-%efi_alt_arch_upper %{lua:
+-  local arch = rpm.expand("%{efi_alt_arch}")
+-  print(string.upper(arch))
+-}
+-
+-%efi_has_alt_arch %{lua:
+-  local arch = rpm.expand("%{efi_alt_arch}")
+-  if arch == "" then
+-    print("0")
+-  else
+-    print("1")
+-  end
+-}
+-- 
+2.14.3
+

@@ -1,7 +1,7 @@
 From 3f4b280e8578d4de3d03b4af205106813a2fdbd1 Mon Sep 17 00:00:00 2001
 From: Peter Jones <pjones@redhat.com>
 Date: Tue, 1 May 2018 14:44:17 -0400
-Subject: [PATCH 6/6] %efi_arch: turns out %{nil} is definitely not what we
+Subject: [PATCH 06/11] %efi_arch: turns out %{nil} is definitely not what we
  want.
 
 Signed-off-by: Peter Jones <pjones@redhat.com>

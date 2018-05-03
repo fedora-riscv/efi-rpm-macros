@@ -1,7 +1,7 @@
 From 1103d2ae35a3702b79b5dc32fc72b7b21711829e Mon Sep 17 00:00:00 2001
 From: Peter Jones <pjones@redhat.com>
 Date: Tue, 1 May 2018 13:45:29 -0400
-Subject: [PATCH 5/5] Return %{nil} instead of "" on unsupported arches
+Subject: [PATCH 05/11] Return %{nil} instead of "" on unsupported arches
 
 Signed-off-by: Peter Jones <pjones@redhat.com>
 ---

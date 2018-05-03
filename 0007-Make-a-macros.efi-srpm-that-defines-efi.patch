@@ -1,7 +1,7 @@
 From 09efa919eb4a85bd77fe8d482f4c369e1fc29ed7 Mon Sep 17 00:00:00 2001
 From: Peter Jones <pjones@redhat.com>
 Date: Tue, 1 May 2018 15:42:01 -0400
-Subject: [PATCH 7/7] Make a macros.efi-srpm that defines %{efi}
+Subject: [PATCH 07/11] Make a macros.efi-srpm that defines %{efi}
 
 Signed-off-by: Peter Jones <pjones@redhat.com>
 ---

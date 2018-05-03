@@ -1,7 +1,7 @@
 From 309396c167bcd9ae6219e70e7e2b93ec5b773939 Mon Sep 17 00:00:00 2001
 From: Peter Jones <pjones@redhat.com>
 Date: Wed, 2 May 2018 10:48:28 -0400
-Subject: [PATCH 9/9] Add efi-filesystem subpackage
+Subject: [PATCH 09/11] Add efi-filesystem subpackage
 
 Signed-off-by: Peter Jones <pjones@redhat.com>
 ---

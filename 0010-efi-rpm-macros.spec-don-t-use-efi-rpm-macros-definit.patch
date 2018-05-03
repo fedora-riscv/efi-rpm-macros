@@ -1,7 +1,7 @@
 From 625cc7b2fdba3e489865c42fddc48b72b3bfecd4 Mon Sep 17 00:00:00 2001
 From: Peter Jones <pjones@redhat.com>
 Date: Wed, 2 May 2018 11:26:04 -0400
-Subject: [PATCH 10/10] efi-rpm-macros.spec: don't use efi-rpm-macros
+Subject: [PATCH 10/11] efi-rpm-macros.spec: don't use efi-rpm-macros
  definitions for paths
 
 Signed-off-by: Peter Jones <pjones@redhat.com>

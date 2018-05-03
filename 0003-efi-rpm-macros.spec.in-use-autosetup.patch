@@ -1,7 +1,7 @@
 From 341b613d7b920292129ae689e9f7588073a08431 Mon Sep 17 00:00:00 2001
 From: Peter Jones <pjones@redhat.com>
 Date: Tue, 1 May 2018 13:26:18 -0400
-Subject: [PATCH 3/5] efi-rpm-macros.spec.in: use autosetup
+Subject: [PATCH 03/11] efi-rpm-macros.spec.in: use autosetup
 
 Signed-off-by: Peter Jones <pjones@redhat.com>
 ---

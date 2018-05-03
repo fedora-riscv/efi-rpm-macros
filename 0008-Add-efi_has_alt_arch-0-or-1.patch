@@ -1,7 +1,7 @@
 From a4358f78316160cf29e177daedf9562e6a0505f2 Mon Sep 17 00:00:00 2001
 From: Peter Jones <pjones@redhat.com>
 Date: Wed, 2 May 2018 10:09:19 -0400
-Subject: [PATCH 8/8] Add %{efi_has_alt_arch} ("0" or "1")
+Subject: [PATCH 08/11] Add %{efi_has_alt_arch} ("0" or "1")
 
 Signed-off-by: Peter Jones <pjones@redhat.com>
 ---

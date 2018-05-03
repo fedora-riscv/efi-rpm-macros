@@ -1,7 +1,7 @@
 From d50b6eb13b00579e89747baa6a6be142930f3f94 Mon Sep 17 00:00:00 2001
 From: Peter Jones <pjones@redhat.com>
 Date: Tue, 1 May 2018 13:39:47 -0400
-Subject: [PATCH 4/5] Add %efi_alt_arch and %efi_alt_arch_upper
+Subject: [PATCH 04/11] Add %efi_alt_arch and %efi_alt_arch_upper
 
 Signed-off-by: Peter Jones <pjones@redhat.com>
 ---
