@@ -1,27 +1,14 @@
 Summary: Common RPM Macros for building EFI-related packages
 Name: efi-rpm-macros
-Version: 2
-Release: 6%{?dist}
+Version: 3
+Release: 1%{?dist}
 Group: Development/System
 License: GPLv3+
 URL: https://github.com/rhboot/%{name}/
-ExclusiveArch: x86_64 aarch64 %{arm} %{ix86}
 BuildRequires: git sed
-Requires: efi-filesystem rpm
 BuildArch: noarch
 
 Source0: https://github.com/rhboot/%{name}/releases/download/%{version}/%{name}-%{version}.tar.bz2
-Patch0001: 0001-Simplify-efi_arch_upper.patch
-Patch0002: 0002-Add-a-changelog-entry-to-the-.spec-for-version-2.patch
-Patch0003: 0003-efi-rpm-macros.spec.in-use-autosetup.patch
-Patch0004: 0004-Add-efi_alt_arch-and-efi_alt_arch_upper.patch
-Patch0005: 0005-Return-nil-instead-of-on-unsupported-arches.patch
-Patch0006: 0006-efi_arch-turns-out-nil-is-definitely-not-what-we-wan.patch
-Patch0007: 0007-Make-a-macros.efi-srpm-that-defines-efi.patch
-Patch0008: 0008-Add-efi_has_alt_arch-0-or-1.patch
-Patch0009: 0009-Add-efi-filesystem-subpackage.patch
-Patch0010: 0010-efi-rpm-macros.spec-don-t-use-efi-rpm-macros-definit.patch
-Patch0011: 0011-Do-it-differently.patch
 
 %global debug_package %{nil}
 %global _efi_vendor_ %(eval sed -n -e 's/rhel/redhat/' -e 's/^ID=//p' /etc/os-release)
@@ -33,7 +20,7 @@ Patch0011: 0011-Do-it-differently.patch
 Summary: Common SRPM Macros for building EFI-related packages
 Group: Development/System
 BuildArch: noarch
-Requires: efi-filesystem rpm
+Requires: rpm
 
 %description -n efi-srpm-macros
 efi-srpm-macros provides a set of SRPM macros for use in EFI-related packages.
@@ -77,6 +64,10 @@ machine bootloaders and tools.
 %dir /boot/efi/EFI/%{_efi_vendor_}
 
 %changelog
+* Fri May 04 2018 Peter Jones <pjones@redhat.com> - 3-1
+- Update to version 3 to try and un-break rawhide composes due to
+  ExclusiveArch constraints.
+
 * Thu May 03 2018 Peter Jones <pjones@redhat.com> - 2-6
 - Rework the macros for better srpm use.
 
