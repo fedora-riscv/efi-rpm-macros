@@ -1,7 +1,7 @@
 Summary: Common RPM Macros for building EFI-related packages
 Name: efi-rpm-macros
 Version: 3
-Release: 1%{?dist}
+Release: 2%{?dist}
 Group: Development/System
 License: GPLv3+
 URL: https://github.com/rhboot/%{name}/
@@ -9,6 +9,7 @@ BuildRequires: git sed
 BuildArch: noarch
 
 Source0: https://github.com/rhboot/%{name}/releases/download/%{version}/%{name}-%{version}.tar.bz2
+Patch0001: 0001-macros.efi-srpm-make-all-of-our-macros-always-expand.patch
 
 %global debug_package %{nil}
 %global _efi_vendor_ %(eval sed -n -e 's/rhel/redhat/' -e 's/^ID=//p' /etc/os-release)
@@ -64,6 +65,12 @@ machine bootloaders and tools.
 %dir /boot/efi/EFI/%{_efi_vendor_}
 
 %changelog
+* Fri May 04 2018 Peter Jones <pjones@redhat.com> - 3-2
+- Always provide macros for efi_arch and efi_alt_arch (and their _upper
+  variants), and make efi_has_arch and efi_has_alt_arch 0 when they will be
+  wrong.  This ensures everything can always expand when we're on a non-efi
+  architecture.
+
 * Fri May 04 2018 Peter Jones <pjones@redhat.com> - 3-1
 - Update to version 3 to try and un-break rawhide composes due to
   ExclusiveArch constraints.
