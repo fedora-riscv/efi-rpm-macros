@@ -12,7 +12,7 @@ Source0: https://github.com/rhboot/%{name}/releases/download/%{version}/%{name}-
 Patch0001: 0001-macros.efi-srpm-make-all-of-our-macros-always-expand.patch
 
 %global debug_package %{nil}
-%global _efi_vendor_ %(eval sed -n -e 's/rhel/redhat/' -e 's/^ID=//p' /etc/os-release)
+%global _efi_vendor_ %(eval echo $(sed -n -e 's/rhel/redhat/' -e 's/^ID=//p' /etc/os-release))
 
 %description
 %{name} provides a set of RPM macros for use in EFI-related packages.
