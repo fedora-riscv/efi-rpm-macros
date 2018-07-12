@@ -1,7 +1,7 @@
 Summary: Common RPM Macros for building EFI-related packages
 Name: efi-rpm-macros
 Version: 3
-Release: 2%{?dist}
+Release: 3%{?dist}
 Group: Development/System
 License: GPLv3+
 URL: https://github.com/rhboot/%{name}/
@@ -65,6 +65,9 @@ machine bootloaders and tools.
 %dir /boot/efi/EFI/%{_efi_vendor_}
 
 %changelog
+* Thu Jul 12 2018 Fedora Release Engineering <releng@fedoraproject.org> - 3-3
+- Rebuilt for https://fedoraproject.org/wiki/Fedora_29_Mass_Rebuild
+
 * Fri May 04 2018 Peter Jones <pjones@redhat.com> - 3-2
 - Always provide macros for efi_arch and efi_alt_arch (and their _upper
   variants), and make efi_has_arch and efi_has_alt_arch 0 when they will be
