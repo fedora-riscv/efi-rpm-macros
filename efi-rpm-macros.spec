@@ -1,15 +1,14 @@
 Summary: Common RPM Macros for building EFI-related packages
 Name: efi-rpm-macros
-Version: 3
-Release: 3%{?dist}
+Version: 4
+Release: 1%{?dist}
 Group: Development/System
 License: GPLv3+
 URL: https://github.com/rhboot/%{name}/
 BuildRequires: git sed
 BuildArch: noarch
 
-Source0: https://github.com/rhboot/%{name}/releases/download/%{version}/%{name}-%{version}.tar.bz2
-Patch0001: 0001-macros.efi-srpm-make-all-of-our-macros-always-expand.patch
+Source0: https://github.com/rhboot/%{name}/releases/download/%{version}/%{name}-4.tar.bz2
 
 %global debug_package %{nil}
 %global _efi_vendor_ %(eval echo $(sed -n -e 's/rhel/redhat/' -e 's/^ID=//p' /etc/os-release))
@@ -37,13 +36,16 @@ The efi-filesystem package contains the basic directory layout for EFI
 machine bootloaders and tools.
 
 %prep
-%autosetup -S git
+%autosetup -S git -n %{name}-4
+git config --local --add efi.vendor "%{_efi_vendor_}"
+git config --local --add efi.esp-root /boot/efi
+git config --local --add efi.arches "x86_64 aarch64 %{arm} %{ix86}"
 
 %build
-%make_build EFI_VENDOR=%{_efi_vendor_} clean all
+%make_build clean all
 
 %install
-%make_install EFI_VENDOR=%{_efi_vendor_}
+%make_install
 
 #%%files
 #%%{!?_licensedir:%%global license %%%%doc}
@@ -56,6 +58,7 @@ machine bootloaders and tools.
 %license LICENSE
 %doc README
 %{_rpmmacrodir}/macros.efi-srpm
+%{_rpmconfigdir}/brp-boot-efi-times
 
 %files -n efi-filesystem
 %defattr(0700,root,root,-)
@@ -65,6 +68,9 @@ machine bootloaders and tools.
 %dir /boot/efi/EFI/%{_efi_vendor_}
 
 %changelog
+* Wed Sep 26 2018 Peter Jones <pjones@redhat.com> - 4-1
+- Provide %%{efi_build_requires} and brp-boot-efi-times
+
 * Thu Jul 12 2018 Fedora Release Engineering <releng@fedoraproject.org> - 3-3
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_29_Mass_Rebuild
 
@@ -93,6 +99,8 @@ machine bootloaders and tools.
 
 * Tue May 01 2018 Peter Jones <pjones@redhat.com> - 2-2
 - Fix the non-efi and non-efi-alt-arch cases, hopefully.
+- Make efi-*-macros packages not be ExclusiveArch, because they need to work
+  in non-efi-arch packages.
 
 * Tue May 01 2018 Peter Jones <pjones@redhat.com> - 2-1
 - Lots of rpmlint fixups and the like.
