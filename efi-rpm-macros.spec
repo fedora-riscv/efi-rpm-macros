@@ -2,7 +2,6 @@ Summary: Common RPM Macros for building EFI-related packages
 Name: efi-rpm-macros
 Version: 4
 Release: 1%{?dist}
-Group: Development/System
 License: GPLv3+
 URL: https://github.com/rhboot/%{name}/
 BuildRequires: git sed
@@ -18,7 +17,6 @@ Source0: https://github.com/rhboot/%{name}/releases/download/%{version}/%{name}-
 
 %package -n efi-srpm-macros
 Summary: Common SRPM Macros for building EFI-related packages
-Group: Development/System
 BuildArch: noarch
 Requires: rpm
 
@@ -27,7 +25,6 @@ efi-srpm-macros provides a set of SRPM macros for use in EFI-related packages.
 
 %package -n efi-filesystem
 Summary: The basic directory layout for EFI machines
-Group: System Environment/Base
 BuildArch: noarch
 Requires: filesystem
 
