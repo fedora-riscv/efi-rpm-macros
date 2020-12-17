@@ -5,6 +5,7 @@ Release: 5%{?dist}
 License: GPLv3+
 URL: https://github.com/rhboot/%{name}/
 BuildRequires: git sed
+BuildRequires: make
 BuildArch: noarch
 
 Source0: https://github.com/rhboot/%{name}/releases/download/%{version}/%{name}-4.tar.bz2
