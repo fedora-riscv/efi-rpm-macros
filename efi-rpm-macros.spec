@@ -1,14 +1,14 @@
 Summary: Common RPM Macros for building EFI-related packages
 Name: efi-rpm-macros
-Version: 4
-Release: 6%{?dist}
+Version: 5
+Release: 1%{?dist}
 License: GPLv3+
 URL: https://github.com/rhboot/%{name}/
 BuildRequires: git sed
 BuildRequires: make
 BuildArch: noarch
 
-Source0: https://github.com/rhboot/%{name}/releases/download/%{version}/%{name}-4.tar.bz2
+Source0: https://github.com/rhboot/%{name}/releases/download/%{version}/%{name}-5.tar.bz2
 
 %global debug_package %{nil}
 %global _efi_vendor_ %(eval echo $(sed -n -e 's/rhel/redhat/' -e 's/^ID=//p' /etc/os-release))
@@ -34,7 +34,7 @@ The efi-filesystem package contains the basic directory layout for EFI
 machine bootloaders and tools.
 
 %prep
-%autosetup -S git -n %{name}-4
+%autosetup -S git_am -n %{name}-5
 git config --local --add efi.vendor "%{_efi_vendor_}"
 git config --local --add efi.esp-root /boot/efi
 git config --local --add efi.arches "x86_64 aarch64 %{arm} %{ix86}"
@@ -66,6 +66,9 @@ git config --local --add efi.arches "x86_64 aarch64 %{arm} %{ix86}"
 %dir /boot/efi/EFI/%{_efi_vendor_}
 
 %changelog
+* Tue Apr 06 2021 Peter Jones <pjones@redhat.com> - 5-1
+- Add arm as an alt for aarch64
+
 * Tue Jan 26 2021 Fedora Release Engineering <releng@fedoraproject.org> - 4-6
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_34_Mass_Rebuild
 
