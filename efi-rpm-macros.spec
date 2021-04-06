@@ -1,7 +1,7 @@
 Summary: Common RPM Macros for building EFI-related packages
 Name: efi-rpm-macros
 Version: 5
-Release: 1%{?dist}
+Release: 2%{?dist}
 License: GPLv3+
 URL: https://github.com/rhboot/%{name}/
 BuildRequires: git sed
@@ -66,6 +66,9 @@ git config --local --add efi.arches "x86_64 aarch64 %{arm} %{ix86}"
 %dir /boot/efi/EFI/%{_efi_vendor_}
 
 %changelog
+* Tue Apr 06 2021 Peter Jones <pjones@redhat.com> - 5-2
+- There's always a typo.
+
 * Tue Apr 06 2021 Peter Jones <pjones@redhat.com> - 5-1
 - Add arm as an alt for aarch64
 
