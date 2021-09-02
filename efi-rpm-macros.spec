@@ -1,7 +1,7 @@
 Summary: Common RPM Macros for building EFI-related packages
 Name: efi-rpm-macros
 Version: 5
-Release: 3%{?dist}
+Release: 4%{?dist}
 License: GPLv3+
 URL: https://github.com/rhboot/%{name}/
 BuildRequires: git sed
@@ -9,6 +9,8 @@ BuildRequires: make
 BuildArch: noarch
 
 Source0: https://github.com/rhboot/%{name}/releases/download/%{version}/%{name}-5.tar.bz2
+
+Patch0001: 0001-Don-t-have-arm-as-an-alt-arch-of-aarch64.patch
 
 %global debug_package %{nil}
 %global _efi_vendor_ %(eval echo $(sed -n -e 's/rhel/redhat/' -e 's/^ID=//p' /etc/os-release))
@@ -66,6 +68,9 @@ git config --local --add efi.arches "x86_64 aarch64 %{arm} %{ix86}"
 %dir /boot/efi/EFI/%{_efi_vendor_}
 
 %changelog
+* Thu Sep 02 2021 Robbie Harwood <rharwood@redhat.com> - 5-4
+- Remove arm as an alt for aarch64 (would require cross compiler)
+
 * Wed Jul 21 2021 Fedora Release Engineering <releng@fedoraproject.org> - 5-3
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_35_Mass_Rebuild
 
