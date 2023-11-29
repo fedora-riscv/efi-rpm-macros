@@ -1,7 +1,7 @@
 Summary: Common RPM Macros for building EFI-related packages
 Name: efi-rpm-macros
 Version: 5
-Release: 9%{?dist}
+Release: 9.rv64%{?dist}
 License: GPLv3+
 URL: https://github.com/rhboot/%{name}/
 BuildRequires: git sed
@@ -12,6 +12,7 @@ Source0: https://github.com/rhboot/%{name}/releases/download/%{version}/%{name}-
 
 Patch0001: 0001-Don-t-have-arm-as-an-alt-arch-of-aarch64.patch
 Patch0002: 0002-Makefile-fix-permission-on-boot-efi-EFI.patch
+Patch0003: 0001-add-riscv64.patch
 
 %global debug_package %{nil}
 %global _efi_vendor_ %(eval echo $(sed -n -e 's/rhel/redhat/' -e 's/^ID=//p' /etc/os-release))
@@ -40,7 +41,7 @@ machine bootloaders and tools.
 %autosetup -S git_am -n %{name}-5
 git config --local --add efi.vendor "%{_efi_vendor_}"
 git config --local --add efi.esp-root /boot/efi
-git config --local --add efi.arches "x86_64 aarch64 %{arm} %{ix86}"
+git config --local --add efi.arches "x86_64 aarch64 %{arm} %{ix86} riscv64"
 
 %build
 %make_build clean all
@@ -78,6 +79,9 @@ git config --local --add efi.arches "x86_64 aarch64 %{arm} %{ix86}"
 
 * Thu Jan 19 2023 Fedora Release Engineering <releng@fedoraproject.org> - 5-7
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_38_Mass_Rebuild
+
+* Wed Nov 23 2022 David Abdurachmanov <davidlt@rivosinc.com> - 5-6.0.rv64
+- Add riscv64
 
 * Thu Jul 21 2022 Fedora Release Engineering <releng@fedoraproject.org> - 5-6
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_37_Mass_Rebuild
