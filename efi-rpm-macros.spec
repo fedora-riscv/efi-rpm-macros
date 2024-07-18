@@ -1,7 +1,7 @@
 Summary: Common RPM Macros for building EFI-related packages
 Name: efi-rpm-macros
 Version: 5
-Release: 7%{?dist}
+Release: 7.rv64%{?dist}
 License: GPLv3+
 URL: https://github.com/rhboot/%{name}/
 BuildRequires: git sed
@@ -11,6 +11,7 @@ BuildArch: noarch
 Source0: https://github.com/rhboot/%{name}/releases/download/%{version}/%{name}-5.tar.bz2
 
 Patch0001: 0001-Don-t-have-arm-as-an-alt-arch-of-aarch64.patch
+Patch0002: 0002-Add-riscv64-support.patch
 
 %global debug_package %{nil}
 %global _efi_vendor_ %(eval echo $(sed -n -e 's/rhel/redhat/' -e 's/^ID=//p' /etc/os-release))
